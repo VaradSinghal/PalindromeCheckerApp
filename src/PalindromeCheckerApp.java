@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class PalindromeCheckerApp {
 
     private static final String APP_NAME = "Palindrome Checker App";
@@ -18,24 +20,25 @@ public class PalindromeCheckerApp {
         // Hardcoded string
         String input = "madam";
 
-        // Convert String to character array
-        char[] characters = input.toCharArray();
+        // Create Stack
+        Stack<Character> stack = new Stack<>();
 
-        // Two-pointer approach
-        int start = 0;
-        int end = characters.length - 1;
+        // Push characters into stack
+        for (int i = 0; i < input.length(); i++) {
+            stack.push(input.charAt(i));
+        }
+
+        // Pop and compare
         boolean isPalindrome = true;
 
-        while (start < end) {
-            if (characters[start] != characters[end]) {
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) != stack.pop()) {
                 isPalindrome = false;
                 break;
             }
-            start++;
-            end--;
         }
 
-        // Display result
+        // Print result
         if (isPalindrome) {
             System.out.println("Result: \"" + input + "\" is a Palindrome.");
         } else {
