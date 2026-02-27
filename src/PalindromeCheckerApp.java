@@ -16,20 +16,30 @@ public class PalindromeCheckerApp {
         System.out.println();
 
         // Hardcoded string
-        String original = "madam";
+        String input = "madam";
 
-        // Reverse string using loop
-        String reversed = "";
+        // Convert String to character array
+        char[] characters = input.toCharArray();
 
-        for (int i = original.length() - 1; i >= 0; i--) {
-            reversed = reversed + original.charAt(i);
+        // Two-pointer approach
+        int start = 0;
+        int end = characters.length - 1;
+        boolean isPalindrome = true;
+
+        while (start < end) {
+            if (characters[start] != characters[end]) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
         }
 
-        // Compare original and reversed
-        if (original.equals(reversed)) {
-            System.out.println("Result: \"" + original + "\" is a Palindrome.");
+        // Display result
+        if (isPalindrome) {
+            System.out.println("Result: \"" + input + "\" is a Palindrome.");
         } else {
-            System.out.println("Result: \"" + original + "\" is NOT a Palindrome.");
+            System.out.println("Result: \"" + input + "\" is NOT a Palindrome.");
         }
 
         System.out.println("\nProgram exited successfully.");
