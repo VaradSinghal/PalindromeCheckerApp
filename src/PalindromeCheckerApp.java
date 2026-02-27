@@ -16,23 +16,20 @@ public class PalindromeCheckerApp {
         System.out.println();
 
         // Hardcoded string
-        String word = "madam";
+        String original = "madam";
 
-        // Check palindrome
-        boolean isPalindrome = true;
+        // Reverse string using loop
+        String reversed = "";
 
-        for (int i = 0; i < word.length() / 2; i++) {
-            if (word.charAt(i) != word.charAt(word.length() - 1 - i)) {
-                isPalindrome = false;
-                break;
-            }
+        for (int i = original.length() - 1; i >= 0; i--) {
+            reversed = reversed + original.charAt(i);
         }
 
-        // Print result
-        if (isPalindrome) {
-            System.out.println("Result: \"" + word + "\" is a Palindrome.");
+        // Compare original and reversed
+        if (original.equals(reversed)) {
+            System.out.println("Result: \"" + original + "\" is a Palindrome.");
         } else {
-            System.out.println("Result: \"" + word + "\" is NOT a Palindrome.");
+            System.out.println("Result: \"" + original + "\" is NOT a Palindrome.");
         }
 
         System.out.println("\nProgram exited successfully.");
