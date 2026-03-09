@@ -1,4 +1,11 @@
 import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+// Strategy Interface
+interface PalindromeStrategy {
+    boolean checkPalindrome(String input);
+}
 
 class PalindromeChecker {
 
@@ -25,39 +32,31 @@ class PalindromeChecker {
 
 public class PalindromeCheckerApp {
 
-    static class Node {
-        char data;
-        Node next;
+// Stack-based Strategy
+class StackStrategy implements PalindromeStrategy {
 
-    public static boolean isPalindrome(String input) {
+    public boolean checkPalindrome(String input) {
 
-        // Normalize string
-        String normalized = input
-                .toLowerCase()               // ignore case
-                .replaceAll("\\s+", "");     // remove spaces
+        Stack<Character> stack = new Stack<>();
 
-        int start = 0;
-        int end = normalized.length() - 1;
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
 
-        // Compare characters
-        while (start < end) {
-            if (normalized.charAt(start) != normalized.charAt(end)) {
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
-            start++;
-            end--;
         }
 
         return true;
     }
+}
 
-    public static void main(String[] args) {
+// Deque-based Strategy
+class DequeStrategy implements PalindromeStrategy {
 
-        System.out.println("====================================");
-        System.out.println("Welcome to " + APP_NAME);
-        System.out.println(VERSION);
-        System.out.println("====================================");
-
+    public boolean checkPalindrome(String input) {
         String input = "madam";
 
         // Create service object
@@ -70,83 +69,69 @@ public class PalindromeCheckerApp {
 
         String input = "Never Odd Or Even";
 
-        boolean result = isPalindrome(input);
+        Deque<Character> deque = new ArrayDeque<>();
 
-        if (result) {
-            System.out.println("Result: \"" + input + "\" is a Palindrome.");
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-
-    public static Node createLinkedList(String str) {
-        Node head = null, tail = null;
-
-        for (char c : str.toCharArray()) {
-            Node newNode = new Node(c);
-
-            if (head == null) {
-                head = tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
         }
 
-        return head;
-    }
+        while (deque.size() > 1) {
 
-    public static boolean isPalindrome(Node head) {
+            char front = deque.removeFirst();
+            char rear = deque.removeLast();
 
-        if (head == null || head.next == null)
-            return true;
-
-        Node slow = head;
-        Node fast = head;
-
-        // Find middle using fast and slow pointers
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        // Reverse second half
-        Node prev = null;
-        Node current = slow;
-
-        while (current != null) {
-            Node next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-
-        Node firstHalf = head;
-        Node secondHalf = prev;
-
-        // Compare halves
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
+            if (front != rear) {
                 return false;
             }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
         }
 
         return true;
     }
+}
+
+// Context Class
+class PalindromeChecker {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeChecker(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean check(String input) {
+        return strategy.checkPalindrome(input);
+    }
+}
+
+// Main Application
+public class PalindromeCheckerApp {
+
+    private static final String APP_NAME = "Palindrome Checker App";
+    private static final String VERSION = "Version 1.0";
 
     public static void main(String[] args) {
 
+        System.out.println("====================================");
+        System.out.println("Welcome to " + APP_NAME);
+        System.out.println(VERSION);
+        System.out.println("====================================");
+
         String input = "madam";
 
-        Node head = createLinkedList(input);
+        // Choose algorithm dynamically
+        PalindromeStrategy strategy = new DequeStrategy();
+        // PalindromeStrategy strategy = new StackStrategy();
 
-        if (isPalindrome(head)) {
-            System.out.println("\"" + input + "\" is a Palindrome.");
+        PalindromeChecker checker = new PalindromeChecker(strategy);
+
+        boolean result = checker.check(input);
+
+        if (result) {
+            System.out.println("Result: \"" + input + "\" is a Palindrome.");
         } else {
-            System.out.println("\"" + input + "\" is NOT a Palindrome.");
+            System.out.println("Result: \"" + input + "\" is NOT a Palindrome.");
         }
+
+        System.out.println("\nProgram exited successfully.");
     }
 }
