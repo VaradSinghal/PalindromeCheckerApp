@@ -4,6 +4,41 @@ public class PalindromeCheckerApp {
         char data;
         Node next;
 
+    public static boolean isPalindrome(String input) {
+
+        // Normalize string
+        String normalized = input
+                .toLowerCase()               // ignore case
+                .replaceAll("\\s+", "");     // remove spaces
+
+        int start = 0;
+        int end = normalized.length() - 1;
+
+        // Compare characters
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println("====================================");
+        System.out.println("Welcome to " + APP_NAME);
+        System.out.println(VERSION);
+        System.out.println("====================================");
+
+        String input = "Never Odd Or Even";
+
+        boolean result = isPalindrome(input);
+
+        if (result) {
+            System.out.println("Result: \"" + input + "\" is a Palindrome.");
         Node(char data) {
             this.data = data;
             this.next = null;
