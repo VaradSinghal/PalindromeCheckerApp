@@ -1,10 +1,24 @@
-import java.util.Deque;
-import java.util.ArrayDeque;
-
 public class PalindromeCheckerApp {
 
     private static final String APP_NAME = "Palindrome Checker App";
     private static final String VERSION = "Version 1.0";
+
+    // Recursive function
+    public static boolean isPalindrome(String str, int start, int end) {
+
+        // Base Condition
+        if (start >= end) {
+            return true;
+        }
+
+        // Check characters
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
+
+        // Recursive Call
+        return isPalindrome(str, start + 1, end - 1);
+    }
 
     public static void main(String[] args) {
 
@@ -12,39 +26,12 @@ public class PalindromeCheckerApp {
         System.out.println("Welcome to " + APP_NAME);
         System.out.println(VERSION);
         System.out.println("====================================");
-        System.out.println("This application checks whether a given string is a palindrome.");
-        System.out.println();
 
-        System.out.println("System ready for palindrome validation...");
-        System.out.println();
-
-        // Hardcoded string
         String input = "madam";
 
-        // Create Deque
-        Deque<Character> deque = new ArrayDeque<>();
+        boolean result = isPalindrome(input, 0, input.length() - 1);
 
-        // Insert characters into deque
-        for (int i = 0; i < input.length(); i++) {
-            deque.addLast(input.charAt(i));
-        }
-
-        boolean isPalindrome = true;
-
-        // Compare front and rear
-        while (deque.size() > 1) {
-
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
-
-            if (front != rear) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        // Print result
-        if (isPalindrome) {
+        if (result) {
             System.out.println("Result: \"" + input + "\" is a Palindrome.");
         } else {
             System.out.println("Result: \"" + input + "\" is NOT a Palindrome.");
