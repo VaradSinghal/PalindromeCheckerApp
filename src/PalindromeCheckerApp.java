@@ -1,42 +1,82 @@
 public class PalindromeCheckerApp {
 
-    private static final String APP_NAME = "Palindrome Checker App";
-    private static final String VERSION = "Version 1.0";
+    static class Node {
+        char data;
+        Node next;
 
-    // Recursive function
-    public static boolean isPalindrome(String str, int start, int end) {
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
-        // Base Condition
-        if (start >= end) {
+    public static Node createLinkedList(String str) {
+        Node head = null, tail = null;
+
+        for (char c : str.toCharArray()) {
+            Node newNode = new Node(c);
+
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+
+        return head;
+    }
+
+    public static boolean isPalindrome(Node head) {
+
+        if (head == null || head.next == null)
             return true;
+
+        Node slow = head;
+        Node fast = head;
+
+        // Find middle using fast and slow pointers
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        // Check characters
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
+        // Reverse second half
+        Node prev = null;
+        Node current = slow;
+
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
         }
 
-        // Recursive Call
-        return isPalindrome(str, start + 1, end - 1);
+        Node firstHalf = head;
+        Node secondHalf = prev;
+
+        // Compare halves
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
+                return false;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return true;
     }
 
     public static void main(String[] args) {
 
-        System.out.println("====================================");
-        System.out.println("Welcome to " + APP_NAME);
-        System.out.println(VERSION);
-        System.out.println("====================================");
-
         String input = "madam";
 
-        boolean result = isPalindrome(input, 0, input.length() - 1);
+        Node head = createLinkedList(input);
 
-        if (result) {
-            System.out.println("Result: \"" + input + "\" is a Palindrome.");
+        if (isPalindrome(head)) {
+            System.out.println("\"" + input + "\" is a Palindrome.");
         } else {
-            System.out.println("Result: \"" + input + "\" is NOT a Palindrome.");
+            System.out.println("\"" + input + "\" is NOT a Palindrome.");
         }
-
-        System.out.println("\nProgram exited successfully.");
     }
 }
